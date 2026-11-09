@@ -162,6 +162,7 @@ public class EventBus implements IEventExceptionHandler, IStartupValidator, IEve
                 .forEach(itf -> checkSupertypes(registeredType, itf));
     }
 
+    @SuppressWarnings("unchecked")
     private void registerListener(final Object target, final Method method) {
         Class<?>[] parameterTypes = method.getParameterTypes();
         if (parameterTypes.length != 1) {
@@ -241,7 +242,7 @@ public class EventBus implements IEventExceptionHandler, IStartupValidator, IEve
         final Class<T> eventClass = (Class<T>) TypeResolver.resolveRawArgument(Consumer.class, consumer.getClass());
         if ((Class<?>) eventClass == TypeResolver.Unknown.class) {
             LOGGER.error(EVENTBUS, "Failed to resolve handler for \"{}\"", consumer.toString());
-            throw new IllegalStateException("Failed to resolve consumer event type: " + consumer.toString());
+            throw new IllegalStateException("Failed to resolve consumer event type: " + consumer);
         }
         return eventClass;
     }
@@ -255,6 +256,7 @@ public class EventBus implements IEventExceptionHandler, IStartupValidator, IEve
         addListener(priority, filter, eventClass, consumer);
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends Event> void addListener(final EventPriority priority, @Nullable Predicate<? super T> filter, final Class<T> eventClass, final Consumer<T> consumer) {
         try {
             classChecker.check(eventClass);

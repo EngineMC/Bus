@@ -14,7 +14,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Helper class that should be faster then ConcurrentHashMap,
+ * Helper class that should be faster than ConcurrentHashMap,
  * yet still manages to properly deal with many threads.
  */
 @ApiStatus.Internal

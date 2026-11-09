@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.1-only
  */
 
-open module net.neoforged.bus.testjars {
-    requires net.neoforged.bus;
+open module dev.engine.bus.testjars {
+    requires dev.engine.bus;
 
-    exports net.neoforged.bus.testjar;
-    exports net.neoforged.bus.benchmarks.compiled;
+    exports dev.engine.bus.testjar;
+    exports dev.engine.bus.benchmarks.compiled;
 }

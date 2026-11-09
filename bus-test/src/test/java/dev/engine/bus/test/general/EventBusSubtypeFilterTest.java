@@ -1,0 +1,56 @@
+/*
+ * Copyright (c) NeoForged and contributors
+ * SPDX-License-Identifier: LGPL-2.1-only
+ */
+
+package dev.engine.bus.test.general;
+
+import java.util.function.Supplier;
+
+import dev.engine.bus.api.BusBuilder;
+import dev.engine.bus.api.Event;
+import dev.engine.bus.api.IEventBus;
+import dev.engine.bus.test.ITestHandler;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public abstract class EventBusSubtypeFilterTest implements ITestHandler {
+    public interface MarkerEvent {}
+    public static class BaseEvent extends Event implements MarkerEvent {}
+    public static class OtherEvent extends Event {}
+
+    private static IEventBus bus(Supplier<BusBuilder> builder) {
+        return builder.get().markerType(MarkerEvent.class).build();
+    }
+
+    private static IEventBus busCheck(Supplier<BusBuilder> builder) {
+        return builder.get().markerType(MarkerEvent.class).checkTypesOnDispatch().build();
+    }
+
+    public static class Valid extends EventBusSubtypeFilterTest {
+        @Override
+        public void test(Supplier<BusBuilder> builder) {
+            IEventBus bus = busCheck(builder);
+            assertDoesNotThrow(() -> bus.addListener((BaseEvent e) -> {}));
+            assertDoesNotThrow(() -> bus.post(new BaseEvent()));
+        }
+    }
+
+    public static class Invalid extends EventBusSubtypeFilterTest {
+        @Override
+        public void test(Supplier<BusBuilder> builder) {
+            IEventBus bus = busCheck(builder);
+            assertThrows(IllegalArgumentException.class, () -> bus.addListener((OtherEvent e) -> {}));
+            assertThrows(IllegalArgumentException.class, () -> bus.post(new OtherEvent()));
+        }
+    }
+
+    public static class InvalidNoDispatch extends EventBusSubtypeFilterTest {
+        @Override
+        public void test(Supplier<BusBuilder> builder) {
+            IEventBus bus = bus(builder);
+            assertThrows(IllegalArgumentException.class, () -> bus.addListener((OtherEvent e) -> {}));
+            assertDoesNotThrow(() -> bus.post(new OtherEvent()));
+        }
+    }
+}

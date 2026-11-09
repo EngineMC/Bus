@@ -16,8 +16,8 @@ plugins {
 }
 
 gradleutils {
-    setupCentralPublishing()
-    setupSigning(signAllPublications: true)
+    // setupCentralPublishing()
+    // setupSigning(signAllPublications: true)
 }
 
 checkJarCompatibility {
@@ -30,7 +30,7 @@ allprojects {
     apply plugin: 'de.jjohannes.extra-java-module-info'
     apply plugin: 'net.neoforged.licenser'
 
-    group 'net.neoforged'
+    group 'dev.engine'
     java {
         toolchain.languageVersion = JavaLanguageVersion.of(17)
         modularity.inferModulePath.set(true)
@@ -43,6 +43,7 @@ allprojects {
     version = gradleutils.version
     
     repositories {
+        mavenCentral()
         mavenLocal()
         maven {
             name = 'forge'
@@ -90,14 +91,14 @@ logger.lifecycle('Version: ' + version)
 ext.sharedManifest = manifest {
     attributes([
         'Specification-Title': 'Bus',
-        'Specification-Vendor': 'NeoForged',
+        'Specification-Vendor': 'EngineMC',
         'Specification-Version': '1', // Currently version 1 of the eventbus specification
         'Implementation-Title': project.name,
         'Implementation-Version': "${project.version}+${gradleutils.gitInfo.branch}.${gradleutils.gitInfo.abbreviatedId}",
-        'Implementation-Vendor' :'NeoForged',
+        'Implementation-Vendor' :'EngineMC',
         'Git-Commit': gradleutils.gitInfo.abbreviatedId,
         'Git-Branch': gradleutils.gitInfo.branch,
-    ] as LinkedHashMap, 'net/neoforged/bus/service/')
+    ] as LinkedHashMap, 'dev/engine/bus/service/')
 }
 
 jar {
@@ -123,12 +124,20 @@ publishing {
                 name = 'Bus'
                 description = 'High performance Event Bus library'
                 pomUtils.githubRepo(it, 'Bus')
-                pomUtils.neoForgedDeveloper(it)
+                it.developers {
+                    it.developer { MavenPomDeveloper dev ->
+                        dev.id.set('engine')
+                        dev.name.set('EngineMC')
+                        dev.url.set('https://github.com/EngineMC')
+                    }
+                }
                 pomUtils.license(it, PomUtilsExtension.License.LGPL_v2)
             }
         }
     }
     repositories {
-        maven gradleutils.publishingMaven
+        maven {
+            url "file://${rootProject.projectDir}/maven-repo"
+        }
     }
 }

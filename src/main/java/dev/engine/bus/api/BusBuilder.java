@@ -8,7 +8,7 @@ package dev.engine.bus.api;
 import dev.engine.bus.BusBuilderImpl;
 
 /**
- * Class used to build {@link IEventBus event buses}.
+ * Class used to build {@linkplain IEventBus event buses}.
  */
 public interface BusBuilder {
     /**
@@ -27,16 +27,29 @@ public interface BusBuilder {
     BusBuilder setExceptionHandler(IEventExceptionHandler handler);
 
     /**
-     * Create the bus in a shut down state.
+     * Create the bus in a shut-down state.
      * <p>
-     * This bus will not post events (and will instead silently ignore them) until it is {@link IEventBus#start() started}.
+     * This bus will not post events (and will instead silently ignore them) until it is {@linkplain IEventBus#start() started}.
      *
      * @return the builder instance
      */
     BusBuilder startShutdown();
 
     /**
-     * Make the bus check posted events using the {@link #classChecker(IEventClassChecker) class checker}.
+     * Create the bus in a shut-down state.
+     * <p>
+     * This bus will not post events (and will instead silently ignore them) until it is {@link IEventBus#start() started}.
+     * </p>
+     * Unlike {@link #startShutdown()}, this method accepts a startup validator,
+     * for determining if the event bus is able to start.
+     *
+     * @param validator the startup validator
+     * @return the builder instance
+     */
+    BusBuilder startShutdown(IStartupValidator validator);
+
+    /**
+     * Make the bus check posted events using the {@linkplain #classChecker(IEventClassChecker) class checker}.
      *
      * @return the builder instance
      */

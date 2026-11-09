@@ -10,6 +10,7 @@ import org.jetbrains.annotations.MustBeInvokedByOverriders;
 
 /**
  * Interface for events that can be canceled.
+ * <p>
  * Listeners registered to the event bus will not receive {@link #isCanceled() canceled} events,
  * unless they were registered with {@code receiveCanceled = true}.
  */

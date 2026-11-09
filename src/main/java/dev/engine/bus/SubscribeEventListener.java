@@ -18,12 +18,12 @@ package dev.engine.bus;
 
 import static org.objectweb.asm.Type.getMethodDescriptor;
 
-import java.lang.reflect.Method;
 import dev.engine.bus.api.Event;
 import dev.engine.bus.api.EventListener;
 import dev.engine.bus.api.EventPriority;
 import dev.engine.bus.api.ICancellableEvent;
 import dev.engine.bus.api.SubscribeEvent;
+import java.lang.reflect.Method;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

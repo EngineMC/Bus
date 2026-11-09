@@ -5,10 +5,10 @@
 
 package dev.engine.bus;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import dev.engine.bus.api.Event;
 import dev.engine.bus.api.EventListener;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.ApiStatus;
 
 /**

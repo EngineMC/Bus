@@ -12,7 +12,7 @@ open module dev.engine.bus.jmh {
     requires jmh.core;
 
     requires static org.jetbrains.annotations;
-    requires static net.neoforged.bus.testjars;
+    requires static dev.engine.bus.testjars;
 
     exports dev.engine.bus.benchmarks;
 }

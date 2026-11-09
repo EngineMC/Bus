@@ -9,6 +9,7 @@ import dev.engine.bus.api.BusBuilder;
 import dev.engine.bus.api.IEventBus;
 import dev.engine.bus.api.IEventClassChecker;
 import dev.engine.bus.api.IEventExceptionHandler;
+import dev.engine.bus.api.IStartupValidator;
 import org.jetbrains.annotations.ApiStatus;
 
 /**
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.ApiStatus;
  */
 @ApiStatus.Internal
 public final class BusBuilderImpl implements BusBuilder {
+    IStartupValidator startupValidator;
     IEventExceptionHandler exceptionHandler;
     boolean startShutdown = false;
     boolean checkTypesOnDispatch = false;
@@ -30,7 +32,13 @@ public final class BusBuilderImpl implements BusBuilder {
 
     @Override
     public BusBuilder startShutdown() {
+        return startShutdown(null);
+    }
+
+    @Override
+    public BusBuilder startShutdown(IStartupValidator validator) {
         this.startShutdown = true;
+        this.startupValidator = validator;
         return this;
     }
 

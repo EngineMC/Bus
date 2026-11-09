@@ -18,6 +18,15 @@ package dev.engine.bus;
 
 import static dev.engine.bus.LogMarkers.EVENTBUS;
 
+import dev.engine.bus.api.Event;
+import dev.engine.bus.api.EventListener;
+import dev.engine.bus.api.EventPriority;
+import dev.engine.bus.api.ICancellableEvent;
+import dev.engine.bus.api.IEventBus;
+import dev.engine.bus.api.IEventClassChecker;
+import dev.engine.bus.api.IEventExceptionHandler;
+import dev.engine.bus.api.IStartupValidator;
+import dev.engine.bus.api.SubscribeEvent;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -29,21 +38,13 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 import net.jodah.typetools.TypeResolver;
-import dev.engine.bus.api.Event;
-import dev.engine.bus.api.EventListener;
-import dev.engine.bus.api.EventPriority;
-import dev.engine.bus.api.ICancellableEvent;
-import dev.engine.bus.api.IEventBus;
-import dev.engine.bus.api.IEventClassChecker;
-import dev.engine.bus.api.IEventExceptionHandler;
-import dev.engine.bus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 @ApiStatus.Internal
-public class EventBus implements IEventExceptionHandler, IEventBus {
+public class EventBus implements IEventExceptionHandler, IStartupValidator, IEventBus {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final boolean checkTypesOnDispatchProperty = Boolean.parseBoolean(System.getProperty("eventbus.checkTypesOnDispatch", "false"));
 
@@ -52,6 +53,7 @@ public class EventBus implements IEventExceptionHandler, IEventBus {
     private final IEventExceptionHandler exceptionHandler;
     private volatile boolean shutdown = false;
 
+    private final IStartupValidator startupValidator;
     private final IEventClassChecker classChecker;
     private final boolean checkTypesOnDispatch;
     private final boolean allowPerPhasePost;
@@ -61,17 +63,19 @@ public class EventBus implements IEventExceptionHandler, IEventBus {
         this(new BusBuilderImpl());
     }
 
-    private EventBus(final IEventExceptionHandler handler, boolean startShutdown, IEventClassChecker classChecker, boolean checkTypesOnDispatch, boolean allowPerPhasePost) {
+    private EventBus(final IEventExceptionHandler handler, boolean startShutdown, IStartupValidator validator, IEventClassChecker classChecker, boolean checkTypesOnDispatch, boolean allowPerPhasePost) {
         if (handler == null) exceptionHandler = this;
         else exceptionHandler = handler;
         this.shutdown = startShutdown;
+        if (validator == null) startupValidator = this;
+        else startupValidator = validator;
         this.classChecker = classChecker;
         this.checkTypesOnDispatch = checkTypesOnDispatch || checkTypesOnDispatchProperty;
         this.allowPerPhasePost = allowPerPhasePost;
     }
 
     public EventBus(final BusBuilderImpl busBuilder) {
-        this(busBuilder.exceptionHandler, busBuilder.startShutdown,
+        this(busBuilder.exceptionHandler, busBuilder.startShutdown, busBuilder.startupValidator,
                 busBuilder.classChecker, busBuilder.checkTypesOnDispatch, busBuilder.allowPerPhasePost);
     }
 
@@ -372,7 +376,11 @@ public class EventBus implements IEventExceptionHandler, IEventBus {
     }
 
     @Override
+    public void validateStartAttempt() throws IllegalStateException {}
+
+    @Override
     public void start() {
+        this.startupValidator.validateStartAttempt();
         this.shutdown = false;
     }
 }

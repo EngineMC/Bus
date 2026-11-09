@@ -28,7 +28,7 @@ public interface IEventBus {
     /**
      * Register an instance object or a {@linkplain Class}, and add listeners for all {@link SubscribeEvent} annotated methods
      * found there, or directly a {@linkplain Method} annotated with {@link SubscribeEvent}.
-     *
+     * <p>
      * Depending on what is passed as an argument, different listener creation behaviour is performed.
      *
      * <dl>
@@ -49,7 +49,7 @@ public interface IEventBus {
     void register(Object target);
 
     /**
-     * Add a consumer listener with default {@link EventPriority#NORMAL} and not recieving canceled events.
+     * Add a consumer listener with default {@link EventPriority#NORMAL} and not receiving canceled events.
      *
      * @param consumer Callback to invoke when a matching event is received
      * @param <T>      The {@link Event} subclass to listen for
@@ -58,7 +58,7 @@ public interface IEventBus {
 
     /**
      * Add a consumer listener not receiving canceled events.
-     *
+     * <p>
      * Use this method when one of the other methods fails to determine the concrete {@link Event} subclass that is
      * intended to be subscribed to.
      *
@@ -79,7 +79,7 @@ public interface IEventBus {
 
     /**
      * Add a consumer listener with the specified {@link EventPriority} and not receiving canceled events.
-     *
+     * <p>
      * Use this method when one of the other methods fails to determine the concrete {@link Event} subclass that is
      * intended to be subscribed to.
      *
@@ -102,7 +102,7 @@ public interface IEventBus {
 
     /**
      * Add a consumer listener with the specified {@link EventPriority} and potentially canceled events.
-     *
+     * <p>
      * Use this method when one of the other methods fails to determine the concrete {@link Event} subclass that is
      * intended to be subscribed to.
      *
@@ -125,7 +125,7 @@ public interface IEventBus {
 
     /**
      * Add a consumer listener receiving potentially canceled events.
-     *
+     * <p>
      * Use this method when one of the other methods fails to determine the concrete {@link Event} subclass that is
      * intended to be subscribed to.
      *
@@ -138,9 +138,9 @@ public interface IEventBus {
 
     /**
      * Unregister the supplied listener from this EventBus.
-     *
+     * <p>
      * Removes all listeners from events.
-     *
+     * <p>
      * NOTE: Consumers can be stored in a variable if unregistration is required for the Consumer.
      *
      * @param object The object, {@linkplain Class}, {@linkplain Method} or {@linkplain Consumer} to unsubscribe.
@@ -177,6 +177,8 @@ public interface IEventBus {
     /**
      * Start this bus (if it was {@linkplain BusBuilder#startShutdown() created shut down}), making it able to
      * post events to listeners.
+     *
+     * @throws IllegalStateException if the event bus is not allowed to start
      */
     void start();
 }

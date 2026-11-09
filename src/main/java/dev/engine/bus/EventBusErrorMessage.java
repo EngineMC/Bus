@@ -16,10 +16,10 @@
 
 package dev.engine.bus;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import dev.engine.bus.api.Event;
 import dev.engine.bus.api.EventListener;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.util.StringBuilderFormattable;
 import org.jetbrains.annotations.ApiStatus;

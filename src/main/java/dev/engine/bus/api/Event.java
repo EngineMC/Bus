@@ -18,9 +18,9 @@ package dev.engine.bus.api;
 
 /**
  * Base Event class that all other events are derived from.
- * <br>
- * <strong>Note on abstract events</strong>
- * <br>
+ *
+ * <h2>Abstract Events</h2>
+ *
  * Listeners cannot be registered to an abstract event class.
  * <p>
  * This is useful for classes that extend {@link Event} with more data and methods,

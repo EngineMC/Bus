@@ -18,22 +18,35 @@ package dev.engine.bus.api;
 
 /**
  * Different priorities for {@link Event} listeners.
- *
- * {@link #NORMAL} is the default level for a listener registered without a priority.
+ * <p>
+ * The default level for a listener registered
+ * without a priority is {@link #NORMAL}.
  *
  * @see SubscribeEvent#priority()
  */
 public enum EventPriority {
+    // Note:
+    // Due to using a ArrayList in the ListenerList,
+    // these need to stay in a contiguous index starting at 0. {Default ordinal}
+
     /**
-     * Priority of event listeners, listeners will be sorted with respect to this priority level.
-     *
-     * Note:
-     * Due to using a ArrayList in the ListenerList,
-     * these need to stay in a contiguous index starting at 0. {Default ordinal}
+     * The highest priority, and the first to execute.
      */
-    HIGHEST, //First to execute
+    HIGHEST,
+    /**
+     * The second-highest priority, executes after {@link #HIGHEST} and before {@link #NORMAL}.
+     */
     HIGH,
+    /**
+     * The default level for a listener registered without a priority.
+     */
     NORMAL,
+    /**
+     * The second-lowest priority, executes after {@link #NORMAL} and before {@link #LOWEST}.
+     */
     LOW,
-    LOWEST; //Last to execute
+    /**
+     * The lowest priority, and the last to execute.
+     */
+    LOWEST
 }

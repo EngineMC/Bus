@@ -17,15 +17,15 @@ import static org.objectweb.asm.Opcodes.PUTFIELD;
 import static org.objectweb.asm.Opcodes.RETURN;
 import static org.objectweb.asm.Opcodes.V16;
 
+import dev.engine.bus.api.Event;
+import dev.engine.bus.api.EventListener;
+import dev.engine.bus.api.SubscribeEvent;
 import java.lang.constant.ConstantDescs;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import dev.engine.bus.api.Event;
-import dev.engine.bus.api.EventListener;
-import dev.engine.bus.api.SubscribeEvent;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.ConstantDynamic;
 import org.objectweb.asm.Handle;

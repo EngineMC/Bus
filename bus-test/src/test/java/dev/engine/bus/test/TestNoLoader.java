@@ -6,8 +6,6 @@
 package dev.engine.bus.test;
 
 import dev.engine.bus.test.general.*;
-import net.engine.bus.test.general.*;
-import net.neoforged.bus.test.general.*;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
